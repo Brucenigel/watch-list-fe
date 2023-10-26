@@ -5,7 +5,7 @@ function Search({ onSearch }) {
 
     useEffect(() => {
         onSearch(search); 
-    }, [search])
+    }, [onSearch, search])
     
     const handleSearch = () => {
         onSearch(search);
