@@ -1,23 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import LoginPage from "./pages/Login";
+import RegisterPage from "./pages/Register";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import StreamList from "./pages/StreamList";
+import { useEffect, useState } from "react";
+import Header from "./components/Header";
+import MovieList from "./pages/MovieList";
 
 function App() {
+  const [authenticated, setAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const isAuthenticated = localStorage.getItem("isAuthenticated");
+    setAuthenticated(isAuthenticated === "true");
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="warpper">
+   
+      <Router>
+      {authenticated ? <Header /> : ""}
+        <Routes>
+          <Route
+            path="/login"
+            element={authenticated ? <StreamList /> : <LoginPage />}
+          />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route
+            path="/"
+            element={authenticated ? <StreamList /> : <LoginPage />}
+          />
+          <Route
+            path="/movie-list/:id"
+            element={authenticated ? <MovieList /> : <LoginPage />}
+          />
+        </Routes>
+      </Router>
     </div>
   );
 }
