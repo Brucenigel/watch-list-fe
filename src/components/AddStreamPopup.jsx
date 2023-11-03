@@ -7,6 +7,7 @@ function AddStreamPopup() {
   const [about, setAbout] = useState("");
   const [website, setwebsite] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+  const [image, setImage] = useState(null);
 
   const openPopup = () => {
     setIsOpen(true);
@@ -17,6 +18,7 @@ function AddStreamPopup() {
     setName("");
     setAbout("");
     setwebsite("");
+    setImage(null);
     setIsSuccess(false);
   };
 
@@ -29,11 +31,16 @@ function AddStreamPopup() {
         name,
         about,
         website,
+        image, 
       };
       await addStream(data);
       setIsSuccess(true);
       closePopup();
     } catch (err) {}
+  };
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
   };
 
   return (
@@ -64,6 +71,19 @@ function AddStreamPopup() {
                 rows="4"
                 className="w-full mb-2 p-2 border border-gray-300 rounded-md"
               />
+               <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="w-full mb-2 p-2 border border-gray-300 rounded-md"
+              />
+              {image && (
+                <img
+                  src={URL.createObjectURL(image)} // Preview the selected image
+                  alt={name}
+                  className="w-20 h-20 object-cover rounded-md mb-2"
+                />
+              )}
               <input
                 placeholder="Website URL"
                 value={website}
